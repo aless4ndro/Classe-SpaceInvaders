@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            body {
+                background-color: #000;
+                margin: 20px;
+            }
+
+            .menu {
+                display: flex;
+                justify-content: center;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 10px;
+            }
+
+            .btn {
+                margin: 0 5px;
+                padding: 2px 10px;
+            }
+
+            .btn img {
+                display: block;
+                width: 30px;
+            }
+
+            .invader {
+                font-size: 0;
+                display: inline-block;
+                width: 50px;
+                height: 45px;
+                background-size: cover;
+                margin: 5px;
+                animation: appear 0.3s forwards;
+            }
+
+            .invader-1 {
+                background-image: url("https://ex.smnarnold.com/class-js/space-invaders/1.png");
+            }
+            .invader-2 {
+                background-image: url("https://ex.smnarnold.com/class-js/space-invaders/2.png");
+            }
+            .invader-3 {
+                background-image: url("https://ex.smnarnold.com/class-js/space-invaders/3.png");
+            }
+
+            .invader.exploded {
+                background-image: url("https://ex.smnarnold.com/class-js/space-invaders/explosion.png");
+                animation: explode 0.5s forwards;
+            }
+
+            @keyframes appear {
+                from {
+                    opacity: 0;
+                    transform: scale(0);
+                }
+                to {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+            }
+
+            @keyframes explode {
+                to {
+                    opacity: 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="menu">
+            <button class="btn btn-1">
+                <img src="https://ex.smnarnold.com/class-js/space-invaders/1-color.png">
+            </button>
+            <button class="btn btn-2">
+                <img src="https://ex.smnarnold.com/class-js/space-invaders/2-color.png">
+            </button>
+            <button class="btn btn-3">
+                <img src="https://ex.smnarnold.com/class-js/space-invaders/3-color.png">
+            </button>
+        </nav>
+        <script>
+            class Invader {
+                constructor(type, ...colors) {
+                    this.type = type;
+                    this.colors = colors;
+                }
+
+                createDiv() {
+                    //Créez un div et attribuez-lui les classes .invader pour lui attribuer les styles communs à tous les invaders, ainsi que la classe .invader-X où X correspond au type de l'invader.
+                    const invader = document.createElement('div');
+                    invader.classList.add('invader', `invader-${this.type}`);
+
+                    //Ajoutez la couleur sauvegardée comme couleur de fond du div, ainsi l'espace transparent dans l'image prendra la couleur en question.
+                    invader.style.backgroundColor = this.colors[0];
+
+                    //Faites en sorte d'ajouter la classe .exploded aux invaders lorsqu'ils se font cliquer dessus. Ceci déclenchera une animation d'explosion déjà réalisée pour vous en CSS.
+                    invader.addEventListener('click', () => {
+                        invader.classList.add('exploded');
+                    });
+
+                    //Ajoutez le div à la page
+                    document.body.appendChild(invader);
+                }
+            }
+
+            // Écoutez le clic sur les boutons. Au clic, créez une nouvelle instance de la
+            // classe Invader et passez au constructeur les paramètres correspondants.
+            document
+                .querySelectorAll('.btn')
+                .forEach((btn, i) => {
+                    btn.addEventListener('click', () => {
+                        const invader = new Invader(
+                            invadersList[i].type,
+                            ...invadersList[i].colors
+                        );
+                        invader.createDiv();
+                    });
+                });
+
+            // Le array des types et couleurs d'invaders.
+            const invadersList = [
+                {
+                    type: 1,
+                    colors: ['#F7910A', '#2366BF']
+                }, {
+                    type: 2,
+                    colors: ['#37B333', '#EF0388']
+                }, {
+                    type: 3,
+                    colors: ['#70D7F8', '#FDF504', '#8F2D56']
+                }
+            ];
+        </script>
+    </body>
+</html>
